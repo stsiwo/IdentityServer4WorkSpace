@@ -24,11 +24,15 @@ namespace Client
             }
 
             // request token
-            var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+            var tokenResponse = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
             {
                 Address = disco.TokenEndpoint,
-                ClientId = "client",
+                ClientId = "ro.client",
                 ClientSecret = "secret",
+
+                // user info
+                UserName = "alice",
+                Password = "password",
 
                 Scope = "api1"
             });

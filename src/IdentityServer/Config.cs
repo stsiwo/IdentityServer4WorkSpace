@@ -3,6 +3,7 @@
 
 
 using IdentityServer4.Models;
+using IdentityServer4.Test;
 using System.Collections.Generic;
 
 /**
@@ -46,10 +47,10 @@ namespace IdentityServer
             {
                 new Client
                 {
-                    ClientId = "client",
+                    ClientId = "ro.client",
                     // there are severals grant types like password, client,  
                     // and you can define teh type here
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     ClientSecrets = 
                     {
                         new Secret("secret".Sha256())
@@ -58,6 +59,25 @@ namespace IdentityServer
                 }
             };                                   
         }
-        // go to Startup.cs for step 4
+
+        // step 4) define users who use client
+        public static List<TestUser> GetUsers()
+        {
+            return new List<TestUser>
+            {
+                new TestUser
+                {
+                    SubjectId = "1",
+                    Username = "alice",
+                    Password = "password"
+                },
+                new TestUser
+                {
+                    SubjectId = "2",
+                    Username = "bob",
+                    Password = "password"
+                }
+            };
+        }
     }
 }

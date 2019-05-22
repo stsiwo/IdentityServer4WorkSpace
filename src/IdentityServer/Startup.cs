@@ -23,13 +23,14 @@ namespace IdentityServer
             // uncomment, if you wan to add an MVC-based UI
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
 
-            // step 4) configure IdentityServer (loading the resource and client definitions in Config.cs) 
+            // step 5) configure IdentityServer (loading the resource and client definitions in Config.cs) 
             var builder = services.AddIdentityServer()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApis())
-                .AddInMemoryClients(Config.GetClients());
+                .AddInMemoryClients(Config.GetClients())
+                .AddTestUsers(Config.GetUsers());
 
-            // step 5) access discovery document by running test server and access to /.well-known/openid-configuration
+            // step 6) access discovery document by running test server and access to /.well-known/openid-configuration
             // discovery document is used by clients and resource server to download necessary informaiton (this docuemnt)
             // by access it at the first time, it also create "tempkey.rsa" file (a developer signing key) automatically
 
