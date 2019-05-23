@@ -3,6 +3,7 @@
 
 
 using System;
+using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,20 @@ namespace IdentityServer
         {
             // uncomment, if you wan to add an MVC-based UI
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+
+            services.AddAuthentication()
+                .AddGoogle("Google", options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                    options.ClientId = "834404038464-opp91a6vhbk1rd0v4b115hko1gjb3chj.apps.googleusercontent.com";
+                    options.ClientSecret = "OBsj0UU_Pqrp6F544KzMeTIg";
+                })
+                .AddFacebook(options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                    options.AppId = "452010548707395";
+                    options.AppSecret = "ab8c4c6b25f8e492f74cc225b909ae1b";
+                });
 
             // step 5) configure IdentityServer (loading the resource and client definitions in Config.cs) 
             var builder = services.AddIdentityServer()
