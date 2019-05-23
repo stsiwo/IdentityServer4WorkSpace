@@ -43,6 +43,11 @@ namespace IdentityServer
         }
 
         // step 3) define your client (app who request token and request protected resource with token)
+        /**
+         * caveat: 
+         *  1. if encouver error of "unauthorized_client redirect_url_invalid", make sure RedirectUris value exactly match with your client one
+         *      -> might disable ssl (sslPort: 0) and change default port (applicationUrls: "localhost:5002/...") in launchSettings.json in your client
+         **/
         public static IEnumerable<Client> GetClients()
         {
             return new List<Client> 
