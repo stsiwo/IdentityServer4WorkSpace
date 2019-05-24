@@ -34,6 +34,17 @@ namespace Api
                     options.RequireHttpsMetadata = false;
                     options.Audience = "api1"; 
                 });
+
+            services.AddCors(options =>
+            {
+                // this defines a CORS policy called "default"
+                options.AddPolicy("default", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5003")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,11 +55,13 @@ namespace Api
                 app.UseDeveloperExceptionPage();
             }
 
-//            app.Run(async (context) =>
-//            {
-//                await context.Response.WriteAsync("Hello World!");
-//            });
+            //            app.Run(async (context) =>
+            //            {
+            //                await context.Response.WriteAsync("Hello World!");
+            //            });
 
+            // don't forget add cors middleware
+            app.UseCors("default");
             // adds the authentication middleware to the pipeline so authentication will be performed automatically on evey call into the host
             // must before "app.UseMvc()"
             app.UseAuthentication();
