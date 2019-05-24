@@ -51,7 +51,7 @@ namespace IdentityServer
          **/
         public static IEnumerable<Client> GetClients()
         {
-            return new List<Client> 
+            return new List<Client>
             {
                 new Client
                 {
@@ -59,7 +59,13 @@ namespace IdentityServer
                     ClientName = "MVC Client",
                     // there are severals grant types like password, client,  
                     // and you can define teh type here
-                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+
+                    // use this to retrive the access token on the back channel
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
 
                     // where to redirect to after login
                     RedirectUris = { "http://localhost:5002/signin-oidc" },
@@ -70,8 +76,12 @@ namespace IdentityServer
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
-                    }
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api1"
+                    },
+
+                    // this allows requesting refresh tokens for long lived API access;
+                    AllowOfflineAccess = true,
                 }
             };                                   
         }

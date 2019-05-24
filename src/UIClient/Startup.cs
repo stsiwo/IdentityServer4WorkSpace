@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -45,11 +46,25 @@ namespace UIClient
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
+                    options.SignInScheme = "Cookies";
                     options.Authority = "http://localhost:5000";
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "mvc";
+                    options.ClientSecret = "secret";
+                    // one of hybrid grant type
+                    options.ResponseType = "code id_token";
+                    // save identity, access and refresh token 
+                    // tokens are stored inside the properties section of the cookie
+                    // easy way to access those tokens are by using extension methods from the Microsoft.AspNetCore.Authentication
+                    // e.g., accessToken = await HttpContext.GetTokenAsync("access_token");
                     options.SaveTokens = true;
+
+                    options.GetClaimsFromUserInfoEndpoint = true;
+
+                    options.Scope.Add("api1");
+                    options.Scope.Add("offline_access");
+                    options.ClaimActions.MapJsonKey("website", "website");
                 });
         }
 
